@@ -22,6 +22,7 @@ import tour.Attraction;
 import tour.Tour;
 import tour.TourGuide;
 import tourist.Tourist;
+import ui.View.ViewAttractionAndEventPanel;
 
 
 /**

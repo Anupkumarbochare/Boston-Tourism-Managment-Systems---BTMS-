@@ -34,6 +34,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import service.BookingService;
 import ui.Admin.AdminDashboard;
+import ui.WorkRequest.WorkRequestPanel;
 
 /**
  *
