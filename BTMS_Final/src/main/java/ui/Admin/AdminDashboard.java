@@ -24,6 +24,8 @@ import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
 import ui.Event.EventManagerManagementPanel;
+import ui.Transport.TransportManagerManagementPanel;
+import ui.WorkRequest.WorkRequestPanel;
 
 
 /**
