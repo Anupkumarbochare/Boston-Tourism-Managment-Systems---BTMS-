@@ -24,7 +24,9 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import service.BookingService;
 import ui.Admin.AdminDashboard;
+import ui.Attraction.AttractionsManagementPanel;
 import ui.Event.EventManagementPanel;
+import ui.Tourist.TouristJPanel;
 import ui.Transport.TransportManagementPanel;
 
 /**

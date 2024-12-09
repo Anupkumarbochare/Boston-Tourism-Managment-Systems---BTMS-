@@ -34,6 +34,7 @@ import javax.swing.Timer;
 import org.json.JSONObject;
 import service.BookingService;
 import ui.Feedback.QueryJPanel;
+import ui.PhotoGallery.PhotoGalleryPanel;
 import ui.View.ViewAttractionAndEventPanel;
 import ui.View.ViewHospitalityPanel;
 import ui.WorkRequest.WorkRequestPanel;
