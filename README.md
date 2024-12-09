@@ -19,6 +19,7 @@ Objectives and Goals:
 
 The Boston Tourism Management System will be able to provide one integrated platform for key tourism services, ensuring tourists an overall seamless experience and smoothing operations for all stakeholders. 
 Key Features:
+
 ● One-stop management of attractions, events, transportation, and hospitality. 
 
 ● Dashboards for tourists and businesses to manage activities easily. 
