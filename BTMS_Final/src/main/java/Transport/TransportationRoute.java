@@ -2,7 +2,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
  * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
  */
-package Transport;
+package transport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,12 +17,12 @@ private int routeId;
     private String startLocation;
     private String endLocation;
     private double price;
-    private int frequency;
+    private String frequency;
     private int capacity;
     private boolean routeActiveStatus;
     
-    public TransportationRoute(int capacity, String routeName, String startLocation, String endLocation, double price, int frequency, int capacity1, boolean routeActiveStatus) {
- 
+    public TransportationRoute(String routeName, String startLocation, String endLocation, 
+                             double price, String frequency, int capacity, boolean routeActiveStatus) {
         this.routeName = routeName;
         this.startLocation = startLocation;
         this.endLocation = endLocation;
@@ -32,8 +32,7 @@ private int routeId;
         this.routeActiveStatus = routeActiveStatus;
     }
     
-
-    
+    // Getters and Setters
     public String getRouteName() { return routeName; }
     public void setRouteName(String routeName) { this.routeName = routeName; }
 
@@ -46,8 +45,8 @@ private int routeId;
     public double getPrice() { return price; }
     public void setPrice(double price) { this.price = price; }
 
-    public int getFrequency() { return frequency; }
-    public void setFrequency(int frequency) { this.frequency = frequency; }
+    public String getFrequency() { return frequency; }
+    public void setFrequency(String frequency) { this.frequency = frequency; }
 
     public int getCapacity() { return capacity; }
     public void setCapacity(int capacity) { this.capacity = capacity; }
@@ -56,9 +55,5 @@ private int routeId;
     public void setRouteActiveStatus(boolean routeActiveStatus) { 
         this.routeActiveStatus = routeActiveStatus; 
     }
-
-    public void add(TransportationRoute transportationroute) {
-        
-}
-    
+  
 }
