@@ -59,6 +59,7 @@ import org.apache.pdfbox.pdmodel.font.PDType1Font;
 import org.json.JSONObject;
 import tour.Attraction;
 import tourist.Tourist;
+import ui.Tourist.TouristJPanel;
 
 /**
  *
