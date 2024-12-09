@@ -4,6 +4,9 @@
 
 package com.mycompany.btms_final;
 
+import javax.swing.SwingUtilities;
+import ui.MainJFrame;
+
 /**
  *
  * @author anupbochare
@@ -11,6 +14,16 @@ package com.mycompany.btms_final;
 public class BTMS_Final {
 
     public static void main(String[] args) {
-        System.out.println("Hello World!");
+ SwingUtilities.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    MainJFrame frame = new MainJFrame();
+                    frame.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
     }
 }

@@ -4,14 +4,25 @@
  */
 package ui.Transport;
 
-import Transport.TransportationRoute;
-import User.UserSession;
+import java.awt.Color;
 import java.awt.Container;
+import java.awt.Cursor;
+import java.awt.Font;
+import java.util.Collections;
+import java.util.List;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JCheckBox;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 import service.BookingService;
-import ui.WorkRequest.WorkRequestPanel;
+import transport.TransportationRoute;
 
 /**
  *
@@ -25,48 +36,156 @@ public class TransportManagementPanel extends javax.swing.JPanel {
      * Creates new form TransportManagementPanel
      */
     public TransportManagementPanel() {
-        initComponents();
-        bookingService = BookingService.getInstance();
-        setupTable();
-        populateTables();
-        
-        // Add table selection listener with null checks
-        tblPublicTransit.getSelectionModel().addListSelectionListener(e -> {
-            if (!e.getValueIsAdjusting()) {
-                int row = tblPublicTransit.getSelectedRow();
-                if (row >= 0) {
-                    loadRowData(row);
-                }
-            }
-        });
+   initComponents();
+    setupCustomStyling();
+    bookingService = BookingService.getInstance();
+    setupTable();
+
+    populateTables();
+    setupTableListener();
+    setupButtonListeners();
     }
-private void loadRowData(int row) {
-        try {
-            txtRouteName.setText(getTableValueOrEmpty(row, 0));
-            txtStartLocation.setText(getTableValueOrEmpty(row, 1));
-            txtEndLocation.setText(getTableValueOrEmpty(row, 2));
-            txtPrice.setText(getTableValueOrEmpty(row, 3));
-            txtFrequency.setText(getTableValueOrEmpty(row, 4));
-            txtCapacity.setText(getTableValueOrEmpty(row, 5));
-            chkRouteActiveStatus.setSelected(
-                "Active".equals(getTableValueOrEmpty(row, 6))
-            );
-        } catch (Exception ex) {
-            System.out.println("Error loading row data: " + ex.getMessage());
-        }
+private void setupCustomStyling() {
+        setBackground(new Color(248, 249, 250));
+        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        // Panel Title
+        JLabel titleLabel = new JLabel("Transport Management");
+        titleLabel.setFont(new Font("Segoe UI", Font.BOLD, 24));
+        add(titleLabel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 20, -1, -1));
+
+        // Form Panel
+        JPanel formPanel = new JPanel();
+        formPanel.setBackground(Color.WHITE);
+        formPanel.setBorder(BorderFactory.createLineBorder(new Color(222, 226, 230)));
+        formPanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        add(formPanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 70, 800, 200));
+
+        // Add form components
+        setupFormComponents(formPanel);
+
+        // Table Panel
+        JPanel tablePanel = new JPanel();
+        tablePanel.setBackground(Color.WHITE);
+        tablePanel.setBorder(BorderFactory.createLineBorder(new Color(222, 226, 230)));
+        tablePanel.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+        add(tablePanel, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 290, 800, 450));
+
+        // Add table components
+        setupTableComponents(tablePanel);
     }
     
-    private String getTableValueOrEmpty(int row, int column) {
-        Object value = PublicTransitTableModel.getValueAt(row, column);
-        return value != null ? value.toString() : "";
-    }
+private void setupFormComponents(JPanel panel) {
+  btnAdd.setVisible(true);
+    btnUpdate.setVisible(true);
+    btnDelete.setVisible(true);
+    btnRouteOptimization.setVisible(true);
+    
+    // Set opaque property
+    btnAdd.setOpaque(true);
+    btnUpdate.setOpaque(true);
+    btnDelete.setOpaque(true);
+    btnRouteOptimization.setOpaque(true);
+    // Route Details
+         lblRouteName = new JLabel("Route Name:");
+    lblRouteName.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblRouteName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 20, -1, -1));
+    
+    txtRouteName = new JTextField();
+    panel.add(txtRouteName, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 20, 200, 25));
 
+    lblStartLocation = new JLabel("Start Location:");
+    lblStartLocation.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblStartLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 60, -1, -1));
+    
+    txtStartLocation = new JTextField();
+    panel.add(txtStartLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 60, 200, 25));
+
+    lblEndLocation = new JLabel("End Location:");
+    lblEndLocation.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblEndLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+    
+    txtEndLocation = new JTextField();
+    panel.add(txtEndLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(120, 100, 200, 25));
+
+    // Route Details (Right Side)
+    lblPrice = new JLabel("Price:");
+    lblPrice.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 20, -1, -1));
+    
+    txtPrice = new JTextField();
+    panel.add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 20, 200, 25));
+
+    lblFrequency = new JLabel("Frequency:");
+    lblFrequency.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblFrequency, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 60, -1, -1));
+    
+    txtFrequency = new JTextField();
+    panel.add(txtFrequency, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 60, 200, 25));
+
+    lblCapacity = new JLabel("Capacity:");
+    lblCapacity.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    panel.add(lblCapacity, new org.netbeans.lib.awtextra.AbsoluteConstraints(400, 100, -1, -1));
+    
+    txtCapacity = new JTextField();
+    panel.add(txtCapacity, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 100, 200, 25));
+
+    // Checkbox
+    chkRouteActiveStatus = new JCheckBox("Route Active Status");
+    chkRouteActiveStatus.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    chkRouteActiveStatus.setBackground(Color.WHITE);
+    panel.add(chkRouteActiveStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(500, 140, -1, -1));
+
+    // Buttons
+    btnAdd = new JButton("Add Route");
+    styleButton(btnAdd, new Color(40, 167, 69));
+    panel.add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 150, 120, 35));
+
+    btnUpdate = new JButton("Update Route");
+    styleButton(btnUpdate, new Color(0, 123, 255));
+    panel.add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 150, 120, 35));
+
+    btnDelete = new JButton("Delete Route");
+    styleButton(btnDelete, new Color(220, 53, 69));
+    panel.add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 150, 120, 35));
+
+    btnRouteOptimization = new JButton("Route Optimization");
+    styleButton(btnRouteOptimization, new Color(108, 117, 125));
+    panel.add(btnRouteOptimization, new org.netbeans.lib.awtextra.AbsoluteConstraints(410, 150, 140, 35));
+    }
+private void styleButton(JButton button, Color bgColor) {
+    button.setBackground(bgColor);
+    button.setForeground(Color.WHITE);
+    button.setFocusPainted(false);
+    button.setBorderPainted(false);
+    button.setOpaque(true);
+    button.setFont(new Font("Segoe UI", Font.BOLD, 12));
+    button.setCursor(new Cursor(Cursor.HAND_CURSOR));
+}
+private void setupButtonListeners() {
+    btnAdd.addActionListener(e -> btnAddActionPerformed(e));
+    btnUpdate.addActionListener(e -> btnUpdateActionPerformed(e));
+    btnDelete.addActionListener(e -> btnDeleteActionPerformed(e));
+    btnRouteOptimization.addActionListener(e -> btnRouteOptimizationActionPerformed(e));
+}
     private void setupTable() {
         PublicTransitTableModel = (DefaultTableModel) tblPublicTransit.getModel();
         PublicTransitTableModel.setColumnIdentifiers(new String[]{
             "Route Name", "Start Location", "End Location", 
             "Price", "Frequency", "Capacity", "Status"
         });
+    }
+
+
+
+    private void setupTableComponents(JPanel panel) {
+        JLabel tableTitle = new JLabel("Public Transit Routes");
+        tableTitle.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        panel.add(tableTitle, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 10, -1, -1));
+
+        tblPublicTransit = new JTable();
+        JScrollPane scrollPane = new JScrollPane(tblPublicTransit);
+        panel.add(scrollPane, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 40, 760, 390));
     }
 
     private void populateTables() {
@@ -114,92 +233,69 @@ private void loadRowData(int row) {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        txtPrice = new javax.swing.JTextField();
-        lblFrequency = new javax.swing.JLabel();
-        txtFrequency = new javax.swing.JTextField();
-        lblCapacity = new javax.swing.JLabel();
         lblRouteName = new javax.swing.JLabel();
-        txtCapacity = new javax.swing.JTextField();
         txtRouteName = new javax.swing.JTextField();
-        chkRouteActiveStatus = new javax.swing.JCheckBox();
-        lblStartLocation = new javax.swing.JLabel();
-        btnAdd = new javax.swing.JButton();
         txtStartLocation = new javax.swing.JTextField();
-        btnUpdate = new javax.swing.JButton();
+        lblStartLocation = new javax.swing.JLabel();
         lblEndLocation = new javax.swing.JLabel();
-        btnDelete = new javax.swing.JButton();
         txtEndLocation = new javax.swing.JTextField();
-        lblPrice = new javax.swing.JLabel();
-        lblPublicTransitRoutes = new javax.swing.JLabel();
+        btnAdd = new javax.swing.JButton();
+        btnUpdate = new javax.swing.JButton();
+        btnDelete = new javax.swing.JButton();
+        txtPrice = new javax.swing.JTextField();
+        txtFrequency = new javax.swing.JTextField();
+        txtCapacity = new javax.swing.JTextField();
+        chkRouteActiveStatus = new javax.swing.JCheckBox();
         btnRouteOptimization = new javax.swing.JButton();
-        jScrollPane2 = new javax.swing.JScrollPane();
+        lblPublicTransitRoutes = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblPublicTransit = new javax.swing.JTable();
-        btnWorkRequest = new javax.swing.JButton();
-
-        setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
-        add(txtPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 60, 86, -1));
-
-        lblFrequency.setText("Frequency");
-        add(lblFrequency, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 100, -1, -1));
-        add(txtFrequency, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 90, 86, -1));
-
-        lblCapacity.setText("Capacity");
-        add(lblCapacity, new org.netbeans.lib.awtextra.AbsoluteConstraints(250, 120, 61, -1));
+        lblPrice = new javax.swing.JLabel();
+        lblFrequency = new javax.swing.JLabel();
+        lblCapacity = new javax.swing.JLabel();
 
         lblRouteName.setText("Route Name");
-        add(lblRouteName, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 70, 80, -1));
-        add(txtCapacity, new org.netbeans.lib.awtextra.AbsoluteConstraints(330, 120, 86, -1));
-        add(txtRouteName, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 60, 86, -1));
-
-        chkRouteActiveStatus.setText("Route Active Status");
-        add(chkRouteActiveStatus, new org.netbeans.lib.awtextra.AbsoluteConstraints(430, 90, -1, -1));
 
         lblStartLocation.setText("Start Location");
-        add(lblStartLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 100, -1, -1));
+
+        lblEndLocation.setText("End Location");
 
         btnAdd.setText("Add");
+        btnAdd.setOpaque(true);
         btnAdd.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnAddActionPerformed(evt);
             }
         });
-        add(btnAdd, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, -1, -1));
-        add(txtStartLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 90, 86, -1));
 
         btnUpdate.setText("Update");
+        btnUpdate.setOpaque(true);
         btnUpdate.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnUpdateActionPerformed(evt);
             }
         });
-        add(btnUpdate, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 160, -1, -1));
-
-        lblEndLocation.setText("End Location");
-        add(lblEndLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 120, 80, -1));
 
         btnDelete.setText("Delete");
+        btnDelete.setOpaque(true);
         btnDelete.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnDeleteActionPerformed(evt);
             }
         });
-        add(btnDelete, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 160, -1, -1));
-        add(txtEndLocation, new org.netbeans.lib.awtextra.AbsoluteConstraints(110, 120, 86, -1));
 
-        lblPrice.setText("Price");
-        add(lblPrice, new org.netbeans.lib.awtextra.AbsoluteConstraints(270, 60, 46, 23));
-
-        lblPublicTransitRoutes.setText("Public Transit Routes ");
-        add(lblPublicTransitRoutes, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 210, -1, -1));
+        chkRouteActiveStatus.setText("Route Active Status");
+        chkRouteActiveStatus.setOpaque(true);
 
         btnRouteOptimization.setText("Route Optimization");
+        btnRouteOptimization.setOpaque(true);
         btnRouteOptimization.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnRouteOptimizationActionPerformed(evt);
             }
         });
-        add(btnRouteOptimization, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 250, -1, -1));
+
+        lblPublicTransitRoutes.setText("Public Transit Routes ");
 
         tblPublicTransit.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -222,146 +318,238 @@ private void loadRowData(int row) {
         });
         jScrollPane1.setViewportView(tblPublicTransit);
 
-        jScrollPane2.setViewportView(jScrollPane1);
+        lblPrice.setText("Price");
 
-        add(jScrollPane2, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 360, 602, 134));
+        lblFrequency.setText("Frequency");
 
-        btnWorkRequest.setText("Work Request");
-        btnWorkRequest.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnWorkRequestActionPerformed(evt);
-            }
-        });
-        add(btnWorkRequest, new org.netbeans.lib.awtextra.AbsoluteConstraints(280, 160, -1, -1));
+        lblCapacity.setText("Capacity");
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(this);
+        this.setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGap(31, 31, 31)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(btnAdd)
+                        .addGap(18, 18, 18)
+                        .addComponent(btnUpdate)
+                        .addGap(17, 17, 17)
+                        .addComponent(btnDelete))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(10, 10, 10)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblPublicTransitRoutes)
+                            .addComponent(btnRouteOptimization)))
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 755, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblRouteName, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtRouteName, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblStartLocation)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtStartLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(lblEndLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(10, 10, 10)
+                                .addComponent(txtEndLocation, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addGap(56, 56, 56)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblFrequency)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(20, 20, 20)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 46, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                    .addComponent(lblCapacity))))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(txtFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, 86, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addGap(14, 14, 14)
+                                .addComponent(chkRouteActiveStatus))
+                            .addComponent(txtCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                .addContainerGap(294, Short.MAX_VALUE))
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(31, 31, 31)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblRouteName))
+                            .addComponent(txtRouteName, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtPrice, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(lblStartLocation))
+                            .addComponent(txtStartLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtFrequency, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(chkRouteActiveStatus))
+                        .addGap(3, 3, 3)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(lblEndLocation)
+                            .addComponent(txtEndLocation, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(10, 10, 10)
+                                .addComponent(txtCapacity, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(lblPrice, javax.swing.GroupLayout.PREFERRED_SIZE, 23, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(17, 17, 17)
+                        .addComponent(lblFrequency)
+                        .addGap(13, 13, 13)
+                        .addComponent(lblCapacity)))
+                .addGap(7, 7, 7)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(btnAdd)
+                    .addComponent(btnUpdate)
+                    .addComponent(btnDelete))
+                .addGap(27, 27, 27)
+                .addComponent(lblPublicTransitRoutes)
+                .addGap(23, 23, 23)
+                .addComponent(btnRouteOptimization)
+                .addGap(50, 50, 50)
+                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 427, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(79, Short.MAX_VALUE))
+        );
     }// </editor-fold>//GEN-END:initComponents
 
-    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
-        int selectedRow = tblPublicTransit.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a route");
-            return;
-        }
-
-        int confirm = JOptionPane.showConfirmDialog(this,
-            "Are you sure you want to delete this route?");
-
-        if (confirm == JOptionPane.YES_OPTION) {
-            String routeName = PublicTransitTableModel.getValueAt(selectedRow, 0).toString();
-            bookingService.deleteRoute(routeName); // Delete from service
-            PublicTransitTableModel.removeRow(selectedRow);
-            clearForm();
-        }
-    }//GEN-LAST:event_btnDeleteActionPerformed
-
     private void btnUpdateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnUpdateActionPerformed
-        int selectedRow = tblPublicTransit.getSelectedRow();
-        if (selectedRow < 0) {
-            JOptionPane.showMessageDialog(this, "Please select a route");
-            return;
-        }
+    int selectedRow = tblPublicTransit.getSelectedRow();
+    if (selectedRow < 0) {
+        JOptionPane.showMessageDialog(this, "Please select a route to update");
+        return;
+    }
+    
+    try {
+        validateInputs();
+        TransportationRoute route = new TransportationRoute(
+    txtRouteName.getText(),
+    txtStartLocation.getText(),
+    txtEndLocation.getText(),
+    Double.parseDouble(txtPrice.getText()),
+    txtFrequency.getText(),
+    Integer.parseInt(txtCapacity.getText()),
+    chkRouteActiveStatus.isSelected()
+        );
+        bookingService.updateRoute(route);
+        populateTables();
+        clearForm();
+        JOptionPane.showMessageDialog(this, "Route updated successfully!");
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
 
-        try {
-            String routeName = txtRouteName.getText();
-            String startLocation = txtStartLocation.getText();
-            String endLocation = txtEndLocation.getText();
-            double price = Double.parseDouble(txtPrice.getText());
-            int frequency = Integer.parseInt(txtFrequency.getText());
-            int capacity = Integer.parseInt(txtCapacity.getText());
-            boolean isActive = chkRouteActiveStatus.isSelected();
-
-            TransportationRoute route = new TransportationRoute(
-                selectedRow + 1,
-                routeName,
-                startLocation,
-                endLocation,
-                price,
-                frequency,
-                capacity,
-                isActive
-            );
-
-            bookingService.updateRoute(route); // Update in service
-
-            // Update table
-            PublicTransitTableModel.setValueAt(routeName, selectedRow, 0);
-            PublicTransitTableModel.setValueAt(startLocation, selectedRow, 1);
-            PublicTransitTableModel.setValueAt(endLocation, selectedRow, 2);
-            PublicTransitTableModel.setValueAt(price, selectedRow, 3);
-            PublicTransitTableModel.setValueAt(frequency, selectedRow, 4);
-            PublicTransitTableModel.setValueAt(capacity, selectedRow, 5);
-            PublicTransitTableModel.setValueAt(isActive ? "Active" : "Inactive", selectedRow, 6);
-
-            clearForm();
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(this, "Please enter valid numbers for price and capacity");
-        }
     }//GEN-LAST:event_btnUpdateActionPerformed
 
-    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
-        // TODO add your handling code here:
-        try{
-            String routename = txtRouteName.getText();
-            String startlocation = txtStartLocation.getText();
-            String endlocation = txtEndLocation.getText();
-            double price = Double.parseDouble(txtPrice.getText());
-            int capacity = Integer.parseInt(txtCapacity.getText());
-            int frequency = Integer.parseInt(txtFrequency.getText());
-            boolean routeActiveStatus = chkRouteActiveStatus.isSelected();
-
-            PublicTransitTableModel.addRow(new Object[]{
-                routename,
-                startlocation,
-                endlocation,
-                price,
-                frequency,
-                capacity,
-                routeActiveStatus ? "Active" : "Inactive"
-            });
-            TransportationRoute route = new TransportationRoute(
-                PublicTransitTableModel.getRowCount(),
-                routename,
-                startlocation,
-                endlocation,
-                price,
-                frequency,
-                capacity,
-                routeActiveStatus
-            );
-            bookingService.addRoute(route);
-
-            clearForm();
-
-        }catch(NumberFormatException e){
-            JOptionPane.showMessageDialog(this, "Please enter valid numbers for price and capacity");
-        }
-    }//GEN-LAST:event_btnAddActionPerformed
-
-    private void btnWorkRequestActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnWorkRequestActionPerformed
-        String username = UserSession.getInstance().getUsername();
-        String organization = "PublicTransitCoordination";
-        String enterprise = "TransportEnterprise";
-
-        Container parent = this.getParent();
-        parent.removeAll();
-        parent.add(new WorkRequestPanel(username, organization, enterprise,"TransportManager"));
-        parent.revalidate();
-        parent.repaint();       // TODO add your handling code here:
-    }//GEN-LAST:event_btnWorkRequestActionPerformed
+    private void btnDeleteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnDeleteActionPerformed
+int selectedRow = tblPublicTransit.getSelectedRow();
+    if (selectedRow < 0) {
+        JOptionPane.showMessageDialog(this, "Please select a route to delete");
+        return;
+    }
+    
+    int confirm = JOptionPane.showConfirmDialog(this, 
+        "Are you sure you want to delete this route?", 
+        "Confirm Delete", 
+        JOptionPane.YES_NO_OPTION);
+        
+    if (confirm == JOptionPane.YES_OPTION) {
+        String routeName = tblPublicTransit.getValueAt(selectedRow, 0).toString();
+        bookingService.deleteRoute(routeName);
+        populateTables();
+        clearForm();
+        JOptionPane.showMessageDialog(this, "Route deleted successfully!");
+    }
+    }//GEN-LAST:event_btnDeleteActionPerformed
 
     private void btnRouteOptimizationActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnRouteOptimizationActionPerformed
-        // TODO add your handling code here:
+ try {
+        List<TransportationRoute> routes = bookingService.getRoutes();
+        optimizeRoutes(routes);
+        JOptionPane.showMessageDialog(this, "Routes optimized successfully!");
+        populateTables();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error optimizing routes: " + e.getMessage());
+    }
+}
+
+private void optimizeRoutes(List<TransportationRoute> routes) {
+    // Sort routes by capacity utilization
+    Collections.sort(routes, (r1, r2) -> {
+        double util1 = r1.getCapacity() * r1.getPrice();
+        double util2 = r2.getCapacity() * r2.getPrice();
+        return Double.compare(util2, util1);
+    });
+    
+    // Adjust frequencies based on utilization
+    for (TransportationRoute route : routes) {
+        if (route.getCapacity() > 500) {
+            route.setFrequency("Every 10 mins");
+        } else if (route.getCapacity() > 200) {
+            route.setFrequency("Every 15 mins");
+        } else {
+            route.setFrequency("Every 20 mins");
+        }
+        bookingService.updateRoute(route);
+    }
+
     }//GEN-LAST:event_btnRouteOptimizationActionPerformed
 
-
+    private void btnAddActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAddActionPerformed
+    try {
+        validateInputs();
+        TransportationRoute route = new TransportationRoute(
+            txtRouteName.getText(),
+            txtStartLocation.getText(),
+            txtEndLocation.getText(),
+            Double.parseDouble(txtPrice.getText()),
+            txtFrequency.getText(),  // Changed to String
+            Integer.parseInt(txtCapacity.getText()),
+            chkRouteActiveStatus.isSelected()
+        );
+        bookingService.addRoute(route);
+        populateTables();
+        clearForm();
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(this, "Error: " + e.getMessage());
+    }
+    }//GEN-LAST:event_btnAddActionPerformed
+private void setupTableListener() {
+    tblPublicTransit.addMouseListener(new java.awt.event.MouseAdapter() {
+        public void mouseClicked(java.awt.event.MouseEvent evt) {
+            int selectedRow = tblPublicTransit.getSelectedRow();
+            if (selectedRow >= 0) {
+                txtRouteName.setText(tblPublicTransit.getValueAt(selectedRow, 0).toString());
+                txtStartLocation.setText(tblPublicTransit.getValueAt(selectedRow, 1).toString());
+                txtEndLocation.setText(tblPublicTransit.getValueAt(selectedRow, 2).toString());
+                txtPrice.setText(tblPublicTransit.getValueAt(selectedRow, 3).toString());
+                txtFrequency.setText(tblPublicTransit.getValueAt(selectedRow, 4).toString());
+                txtCapacity.setText(tblPublicTransit.getValueAt(selectedRow, 5).toString());
+                chkRouteActiveStatus.setSelected(
+                    tblPublicTransit.getValueAt(selectedRow, 6).toString().equals("Active")
+                );
+            }
+        }
+    });
+}
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAdd;
     private javax.swing.JButton btnDelete;
     private javax.swing.JButton btnRouteOptimization;
     private javax.swing.JButton btnUpdate;
-    private javax.swing.JButton btnWorkRequest;
     private javax.swing.JCheckBox chkRouteActiveStatus;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JLabel lblCapacity;
     private javax.swing.JLabel lblEndLocation;
     private javax.swing.JLabel lblFrequency;

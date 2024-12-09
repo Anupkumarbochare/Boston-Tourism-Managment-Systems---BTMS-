@@ -6,8 +6,8 @@ package service;
 
 import Booking.Booking;
 import Transport.TransportManager;
-import Transport.TransportationRoute;
 import UserFeedback.ServiceFeedback;
+import com.github.javafaker.Faker;
 import event.Event;
 import event.EventManager;
 import hospitality.HospitalityProperty;
@@ -22,6 +22,7 @@ import tour.Attraction;
 import tour.Tour;
 import tour.TourGuide;
 import tourist.Tourist;
+import transport.TransportationRoute;
 import ui.Admin.UserManagementJPanel;
 import ui.View.ViewAttractionAndEventPanel;
 
@@ -50,6 +51,7 @@ public class BookingService {
     private List<ServiceFeedback> serviceFeedbacks;
     private List<UserManagementJPanel> userManagementPanels = new ArrayList<>();
 
+
     private BookingService() { // Make constructor private
         attractions = new ArrayList<>();
         hotels = new ArrayList<>();
@@ -72,6 +74,8 @@ public class BookingService {
         initializeTransportManagerData();
         serviceFeedbacks = new ArrayList<>();
         initializeServiceFeebackData();
+         routes = new ArrayList<>();
+    initializeTransportRoutes();
     }
 
     public static synchronized BookingService getInstance() {
@@ -141,16 +145,19 @@ public class BookingService {
         // Add more tours...
     }
 
-    private void initializeGuides() {
-        guides.add(new TourGuide(1, "John Smith", "guide1", "guide123",
-                "617-555-0101", true));
-        guides.add(new TourGuide(2, "Maria Garcia", "guide2", "guide456",
-                "617-555-0102", true));
-        guides.add(new TourGuide(3, "David Chen", "guide3", "pass789",
-                "617-555-0103", true));
-        guides.add(new TourGuide(4, "Sarah Johnson", "guide4", "pass321",
-                "617-555-0104", true));
+private void initializeGuides() {
+    Faker faker = new Faker();
+    for (int i = 1; i <= 10; i++) {
+        guides.add(new TourGuide(
+            i,
+            faker.name().fullName(),
+            "guide" + i,
+            faker.internet().password(),
+            faker.phoneNumber().cellPhone(),
+            true
+        ));
     }
+}
 
     private void initializeEvents() {
         events.add(new Event(1, "Boston Food Festival", "Boston Common", "Annual food festival", 25.0, "2024-12-15", "10AM-8PM", 1000, true, "Food & Culture", "Boston Events Co"));
@@ -175,74 +182,109 @@ public class BookingService {
         events.add(new Event(20, "Holiday Market", "Faneuil Hall", "Christmas market", 0.0, "2024-12-01", "10AM-8PM", 3000, true, "Holiday", "Boston Markets Association"));
     }
 
-    private void initializeTourists() {
-        tourists.add(new Tourist(1, "John Smith", "tourist", "tourist123",
-                "anup.bochare.7@gmail.com", "617-555-0101", "USA", "P123456",
-                "Cultural Tours", true, 0, 0));
+private void initializeTourists() {
+    tourists.add(new Tourist(1, "John Smith", "tourist", "tourist123", 
+        "anup.bochare.7@gmail.com", "617-555-0101", "USA", "P123456", 
+        "Cultural Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(2, "Maria Garcia", "tourist2", "tourist2123", 
+        "bochare.a@northeastern.edu", "617-555-0102", "Spain", "P234567", 
+        "Food Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(3, "David Chen", "tourist3", "tourist3123", 
+        "david@gmail.com", "617-555-0103", "China", "P345678", 
+        "Historical Sites", true, 0, 0));
+        
+    tourists.add(new Tourist(4, "Sarah Johnson", "tourist4", "tourist4123", 
+        "sarah@northeastern.edu", "617-555-0104", "UK", "P456789", 
+        "Art Museums", true, 0, 0));
+        
+    tourists.add(new Tourist(5, "James Wilson", "tourist5", "tourist5123", 
+        "james@gmail.com", "617-555-0105", "Canada", "P567890", 
+        "Nature Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(6, "Emma Brown", "tourist6", "tourist6123", 
+        "emma@northeastern.edu", "617-555-0106", "Australia", "P678901", 
+        "Adventure Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(7, "Luis Rodriguez", "tourist7", "tourist7123", 
+        "luis@gmail.com", "617-555-0107", "Mexico", "P789012", 
+        "Food Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(8, "Anna Kowalski", "tourist8", "tourist8123", 
+        "anna@northeastern.edu", "617-555-0108", "Poland", "P890123", 
+        "Historical Sites", true, 0, 0));
+        
+    tourists.add(new Tourist(9, "Mohammed Ahmed", "tourist9", "tourist9123", 
+        "mohammed@gmail.com", "617-555-0109", "UAE", "P901234", 
+        "Shopping Tours", true, 0, 0));
+        
+    tourists.add(new Tourist(10, "Yuki Tanaka", "tourist10", "tourist10123", 
+        "yuki@northeastern.edu", "617-555-0110", "Japan", "P012345", 
+        "Cultural Tours", true, 0, 0));
+}
 
-        tourists.add(new Tourist(2, "Maria Garcia", "tourist2", "tourist2123",
-                "bochare.a@northeastern.edu", "617-555-0102", "Spain", "P234567",
-                "Food Tours", true, 0, 0));
-
-        tourists.add(new Tourist(3, "David Chen", "tourist3", "tourist3123",
-                "david@gmail.com", "617-555-0103", "China", "P345678",
-                "Historical Sites", true, 0, 0));
-
-        tourists.add(new Tourist(4, "Sarah Johnson", "tourist4", "tourist4123",
-                "sarah@northeastern.edu", "617-555-0104", "UK", "P456789",
-                "Art Museums", true, 0, 0));
-
-        tourists.add(new Tourist(5, "James Wilson", "tourist5", "tourist5123",
-                "james@gmail.com", "617-555-0105", "Canada", "P567890",
-                "Nature Tours", true, 0, 0));
-
-        tourists.add(new Tourist(6, "Emma Brown", "tourist6", "tourist6123",
-                "emma@northeastern.edu", "617-555-0106", "Australia", "P678901",
-                "Adventure Tours", true, 0, 0));
-
-        tourists.add(new Tourist(7, "Luis Rodriguez", "tourist7", "tourist7123",
-                "luis@gmail.com", "617-555-0107", "Mexico", "P789012",
-                "Food Tours", true, 0, 0));
-
-        tourists.add(new Tourist(8, "Anna Kowalski", "tourist8", "tourist8123",
-                "anna@northeastern.edu", "617-555-0108", "Poland", "P890123",
-                "Historical Sites", true, 0, 0));
-
-        tourists.add(new Tourist(9, "Mohammed Ahmed", "tourist9", "tourist9123",
-                "mohammed@gmail.com", "617-555-0109", "UAE", "P901234",
-                "Shopping Tours", true, 0, 0));
-
-        tourists.add(new Tourist(10, "Yuki Tanaka", "tourist10", "tourist10123",
-                "yuki@northeastern.edu", "617-555-0110", "Japan", "P012345",
-                "Cultural Tours", true, 0, 0));
+private void initializeHospitalityData() {
+    Faker faker = new Faker();
+    
+    // Hotels
+    String[] hotelNames = {"Marriott", "Hilton", "Ritz-Carlton", "Four Seasons", "Westin", 
+                          "Sheraton", "Harbor", "Lenox", "Copley", "W"};
+    String[] locations = {"Downtown", "Garden", "Boston", "Copley Place", "Square"};
+    
+    for (int i = 1; i <= 10; i++) {
+        String hotelName = hotelNames[i-1] + " " + faker.options().option(locations);
+        double basePrice = faker.number().numberBetween(180, 500);
+        double peakPrice = basePrice * faker.number().numberBetween(15, 20) / 10.0;
+        properties.add(new HospitalityProperty(
+            i,
+            hotelName,
+            "Hotel",
+            basePrice,
+            peakPrice,
+            true,
+            "Hotel Manager - " + hotelNames[i-1]
+        ));
     }
 
-    private void initializeHospitalityData() {
-        // Hotels
-        properties.add(new HospitalityProperty(1, "Marriott Downtown", "Hotel", 250.0, 450.0, true, "Hotel Manager - Marriott"));
-        properties.add(new HospitalityProperty(2, "Hilton Garden", "Hotel", 180.0, 300.0, true, "Hotel Manager - Hilton"));
-        properties.add(new HospitalityProperty(3, "Ritz-Carlton Boston", "Hotel", 400.0, 800.0, true, "Hotel Manager - Ritz"));
-        properties.add(new HospitalityProperty(4, "Four Seasons Boston", "Hotel", 450.0, 900.0, true, "Hotel Manager - Four Seasons"));
-        properties.add(new HospitalityProperty(5, "Westin Copley Place", "Hotel", 300.0, 600.0, true, "Hotel Manager - Westin"));
-        properties.add(new HospitalityProperty(6, "Sheraton Boston", "Hotel", 250.0, 500.0, true, "Hotel Manager - Sheraton"));
-        properties.add(new HospitalityProperty(7, "Boston Harbor Hotel", "Hotel", 350.0, 700.0, true, "Hotel Manager - Harbor"));
-        properties.add(new HospitalityProperty(8, "Lenox Hotel", "Hotel", 280.0, 550.0, true, "Hotel Manager - Lenox"));
-        properties.add(new HospitalityProperty(9, "Copley Square Hotel", "Hotel", 220.0, 440.0, true, "Hotel Manager - Copley"));
-        properties.add(new HospitalityProperty(10, "W Boston", "Hotel", 320.0, 640.0, true, "Hotel Manager - W Hotels"));
-
-        // Restaurants
-        properties.add(new HospitalityProperty(11, "Legal Sea Foods", "Fine Dining", 60.0, 120.0, true, "Restaurant Manager - Legal"));
-        properties.add(new HospitalityProperty(12, "Abe & Louie's", "Fine Dining", 80.0, 160.0, true, "Restaurant Manager - Abe & Louie's"));
-        properties.add(new HospitalityProperty(13, "Atlantic Fish Co", "Fine Dining", 70.0, 140.0, true, "Restaurant Manager - Atlantic"));
-        properties.add(new HospitalityProperty(14, "Giacomo's", "Italian Dining", 40.0, 80.0, true, "Restaurant Manager - Giacomo's"));
-        properties.add(new HospitalityProperty(15, "Union Oyster House", "Seafood", 55.0, 110.0, true, "Restaurant Manager - Union"));
-        properties.add(new HospitalityProperty(16, "Mooo Restaurant", "Steakhouse", 75.0, 150.0, true, "Restaurant Manager - Mooo"));
-        properties.add(new HospitalityProperty(17, "O Ya", "Japanese", 150.0, 300.0, true, "Restaurant Manager - O Ya"));
-        properties.add(new HospitalityProperty(18, "Mistral", "French", 90.0, 180.0, true, "Restaurant Manager - Mistral"));
-        properties.add(new HospitalityProperty(19, "Grill 23", "Steakhouse", 85.0, 170.0, true, "Restaurant Manager - Grill 23"));
-        properties.add(new HospitalityProperty(20, "Menton", "Fine Dining", 95.0, 190.0, true, "Restaurant Manager - Menton"));
+    // Restaurants
+    String[] cuisineTypes = {"Fine Dining", "Italian Dining", "Seafood", "Steakhouse", "Japanese", "French"};
+    
+    for (int i = 11; i <= 20; i++) {
+        String restaurantName = faker.company().name() + " " + faker.food().dish();
+        String cuisineType = faker.options().option(cuisineTypes);
+        double basePrice = faker.number().numberBetween(40, 150);
+        double peakPrice = basePrice * faker.number().numberBetween(15, 20) / 10.0;
+        properties.add(new HospitalityProperty(
+            i,
+            restaurantName,
+            cuisineType,
+            basePrice,
+            peakPrice,
+            true,
+            "Restaurant Manager - " + restaurantName.split(" ")[0]
+        ));
     }
-
+}
+private void initializeTransportRoutes() {
+Faker faker = new Faker();
+    String[] startLocations = {"South Station", "Back Bay", "Harvard Square", "Logan Airport", "Copley Square"};
+    String[] endLocations = {"Downtown Boston", "Cambridge", "Somerville", "Brookline", "Newton"};
+    String[] frequencies = {"Every 10 mins", "Every 15 mins", "Every 20 mins", "Every 30 mins"};
+    
+    for (int i = 1; i <= 10; i++) {
+        TransportationRoute route = new TransportationRoute(
+            "Route " + faker.number().digits(3),
+            faker.options().option(startLocations),
+            faker.options().option(endLocations),
+            faker.number().randomDouble(2, 2, 10),
+            faker.options().option(frequencies),
+            faker.number().numberBetween(100, 500),
+            true
+        );
+        routes.add(route);
+    }
+}
     private void initializeTransportManagerData() {
         transportManagers = new ArrayList<>();
         transportManagers.add(new TransportManager(1, "John Smith", "transport1",
@@ -277,44 +319,44 @@ public class BookingService {
         properties.removeIf(p -> p.getPropertyId() == propertyId);
     }
 
-    public void registerUserManagementPanel(UserManagementJPanel panel) {
-        if (!userManagementPanels.contains(panel)) {
-            userManagementPanels.add(panel);
-        }
+public void registerUserManagementPanel(UserManagementJPanel panel) {
+    if (!userManagementPanels.contains(panel)) {
+        userManagementPanels.add(panel);
     }
+}
 
-    public void notifyUserManagementPanel() {
-        for (UserManagementJPanel panel : userManagementPanels) {
-            panel.refreshData();
-        }
+public void notifyUserManagementPanel() {
+    for (UserManagementJPanel panel : userManagementPanels) {
+        panel.refreshData();
     }
+}
 
-    public void bookAttraction(Attraction attraction, String username) {
-        if (attraction.getCapacity() > 0) {
-            attraction.setCapacity(attraction.getCapacity() - 1);
-            for (Tourist tourist : tourists) {
-                if (tourist.getUsername().equals(username)) {
-                    tourist.incrementAttractionsBooked();
-                    notifyUserManagementPanel();
-                    break;
-                }
+public void bookAttraction(Attraction attraction, String username) {
+    if (attraction.getCapacity() > 0) {
+        attraction.setCapacity(attraction.getCapacity() - 1);
+        for (Tourist tourist : tourists) {
+            if (tourist.getUsername().equals(username)) {
+                tourist.incrementAttractionsBooked();
+                notifyUserManagementPanel();
+                break;
             }
         }
     }
+}
 
-    public void bookEvent(Event event, String username) {
-        if (event.getCapacity() > 0) {
-            event.setCapacity(event.getCapacity() - 1);
-            for (Tourist tourist : tourists) {
-                if (tourist.getUsername().equals(username)) {
-                    tourist.incrementEventsBooked();
-                    notifyUserManagementPanel();
-                    break;
-                }
+
+public void bookEvent(Event event, String username) {
+    if (event.getCapacity() > 0) {
+        event.setCapacity(event.getCapacity() - 1);
+        for (Tourist tourist : tourists) {
+            if (tourist.getUsername().equals(username)) {
+                tourist.incrementEventsBooked();
+                notifyUserManagementPanel();
+                break;
             }
         }
     }
-
+}
     public List<Tourist> getAvailableTourists() {
         return new ArrayList<>(tourists);
     }
@@ -619,7 +661,8 @@ public class BookingService {
 //        }
 //    }
 //}
-    public Tourist getTouristByUsername(String username) {
+    
+public Tourist getTouristByUsername(String username) {
         for (Tourist tourist : tourists) {
             if (tourist.getUsername().equals(username)) {
                 return tourist;

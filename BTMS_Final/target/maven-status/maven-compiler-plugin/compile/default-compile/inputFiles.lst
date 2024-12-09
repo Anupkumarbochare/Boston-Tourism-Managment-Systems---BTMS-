@@ -1,6 +1,9 @@
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/hospitality/Hotel.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Feedback/QueryResponseJPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/UserFeedback/ServiceFeedback.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/WorkRequest/WorkRequestPanel.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Feedback/QueryJPanel.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Hospitality/ViewHospitalityPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Attraction/AttractionsManagementPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Event/EventManagerManagementPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/transport/TransportationRoute.java
@@ -12,7 +15,9 @@
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/com/mycompany/btms_final/BTMS_Final.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Transport/TransportManagerManagementPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/Functional_Dependencies/WeatherService.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Hospitality/HospitalityManagementPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/MainJFrame.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Tourist/TouristJPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/View/ViewAttractionAndEventPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/workrequest/WorkRequest.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/View/ViewHospitalityPanel.java
@@ -20,6 +25,7 @@
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/tour/Tour.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/service/BookingService.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/User/UserCredentialsManager.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Admin/UserManagementJPanel.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/booking/Booking.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/tour/Attraction.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/transport/TransportManager.java
@@ -31,3 +37,5 @@
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/event/Event.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/Functional_Dependencies/QRCodeGenerator.java
 /Users/anupbochare/Desktop/BTMS_Final/src/main/java/event/EventManager.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/PhotoGallery/PhotoGalleryPanel.java
+/Users/anupbochare/Desktop/BTMS_Final/src/main/java/ui/Analytics/AnalyticsDashboardPanel.java

@@ -23,6 +23,7 @@ import javax.swing.JButton;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.SwingUtilities;
+import ui.Analytics.AnalyticsDashboardPanel;
 import ui.Attraction.TourGuideManagementPanel;
 import ui.Event.EventManagerManagementPanel;
 import ui.Feedback.QueryResponseJPanel;
@@ -396,7 +397,7 @@ private void styleBootstrapButton(JButton button, String text, String style) {
     private void btnViewAnalyticsActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViewAnalyticsActionPerformed
         Container container = this.getParent();
         container.removeAll();
-        container.add(new AnalyticsDashboardPanel());
+        container.add(new AnalyticsDashboardPanel("Admin"));
         container.revalidate();
         container.repaint();
     }//GEN-LAST:event_btnViewAnalyticsActionPerformed
