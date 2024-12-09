@@ -26,6 +26,7 @@ import javax.swing.SwingUtilities;
 import ui.Attraction.TourGuideManagementPanel;
 import ui.Event.EventManagerManagementPanel;
 import ui.Feedback.QueryResponseJPanel;
+import ui.Hospitality.HospitalityManagementPanel;
 import ui.Transport.TransportManagerManagementPanel;
 import ui.WorkRequest.WorkRequestPanel;
 
