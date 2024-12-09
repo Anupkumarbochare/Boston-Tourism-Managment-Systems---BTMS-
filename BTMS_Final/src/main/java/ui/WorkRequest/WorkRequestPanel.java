@@ -29,7 +29,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import ui.Admin.AdminDashboard;
+import ui.Attraction.AttractionsManagementPanel;
 import ui.Event.EventManagementPanel;
+import ui.Tourist.TouristJPanel;
 import ui.Transport.TransportManagementPanel;
 
 
