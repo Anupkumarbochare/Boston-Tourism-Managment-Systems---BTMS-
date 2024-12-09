@@ -24,6 +24,7 @@ import javax.swing.JTextField;
 import javax.swing.Timer;
 import service.BookingService;
 import ui.Admin.AdminDashboard;
+import ui.Analytics.AnalyticsDashboardPanel;
 import ui.Attraction.AttractionsManagementPanel;
 import ui.Event.EventManagementPanel;
 import ui.Hospitality.HospitalityManagementPanel;
@@ -43,16 +44,16 @@ public class MainJFrame extends javax.swing.JFrame {
      * Creates new form MainJFrame
      */
     public MainJFrame() {
-         try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Windows".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Windows".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    } catch (Exception e) {
-        e.printStackTrace();
-    }
         initComponents();
         setSize(1400, 800);
         setResizable(false);
@@ -60,8 +61,7 @@ public class MainJFrame extends javax.swing.JFrame {
         credManager = UserCredentialsManager.getInstance();
         System.out.println("CredManager initialized");
         bookingService = BookingService.getInstance();
-    setupCustomStyling();
-
+        setupCustomStyling();
 
     }
 
@@ -73,100 +73,102 @@ public class MainJFrame extends javax.swing.JFrame {
         this.revalidate();
         this.repaint();
     }
-private void setupCustomStyling() {
 
-    jSplitPane1.setDividerLocation(250);
-    jSplitPane1.setDividerSize(1);
-    
-    // Set minimum sizes for the panels
-    jPanel5.setMinimumSize(new Dimension(200, 400));
-    CardSequencePanel.setMinimumSize(new Dimension(400, 400));
-    
-    // Ensure split pane expands properly
-    jSplitPane1.setResizeWeight(0.2);
-    
+    private void setupCustomStyling() {
+
+        jSplitPane1.setDividerLocation(250);
+        jSplitPane1.setDividerSize(1);
+
+        // Set minimum sizes for the panels
+        jPanel5.setMinimumSize(new Dimension(200, 400));
+        CardSequencePanel.setMinimumSize(new Dimension(400, 400));
+
+        // Ensure split pane expands properly
+        jSplitPane1.setResizeWeight(0.2);
+
 // Main panel styling
-    jPanel5.setBackground(new Color(255, 255, 255));
-    
-    // Title styling
-    lblTitle3.setFont(new Font("Segoe UI", Font.BOLD, 28));
-    lblTitle3.setForeground(new Color(51, 51, 51));
-    
-    // Username/Password label styling
-    jLabel7.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    jLabel8.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    
-    // Login button styling
-    btnLogin3.setPreferredSize(new Dimension(200, 40));
-    btnLogin3.setBackground(new Color(79, 70, 229));
-    btnLogin3.setForeground(Color.WHITE);
-    btnLogin3.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    btnLogin3.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
-    btnLogin3.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    btnLogin3.setFocusPainted(false);
-    
-    // Text fields styling
-    styleTextField(txtUserName3);
-    styleTextField(txtPassword3);
-    
-    // Logout button styling
-    btnLogout.setBackground(new Color(239, 68, 68));
-    btnLogout.setForeground(Color.WHITE);
-    btnLogout.setFont(new Font("Segoe UI", Font.BOLD, 14));
-    btnLogout.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
-    btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
-    
-    // Add hover effects
-    addButtonHoverEffect(btnLogin3);
-    addButtonHoverEffect(btnLogout);
-}
+        jPanel5.setBackground(new Color(255, 255, 255));
 
-private void styleTextField(JTextField field) {
-    field.setPreferredSize(new Dimension(200, 35));
-    field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
-    field.setBorder(BorderFactory.createCompoundBorder(
-        BorderFactory.createLineBorder(new Color(209, 213, 219)),
-        BorderFactory.createEmptyBorder(5, 10, 5, 10)
-    ));
-    
-    field.addFocusListener(new FocusAdapter() {
-        @Override
-        public void focusGained(FocusEvent e) {
-            field.setBorder(BorderFactory.createCompoundBorder(
-                BorderFactory.createLineBorder(new Color(79, 70, 229), 2),
-                BorderFactory.createEmptyBorder(5, 10, 5, 10)
-            ));
-        }
-        
-        @Override
-        public void focusLost(FocusEvent e) {
-            field.setBorder(BorderFactory.createCompoundBorder(
+        // Title styling
+        lblTitle3.setFont(new Font("Segoe UI", Font.BOLD, 28));
+        lblTitle3.setForeground(new Color(51, 51, 51));
+
+        // Username/Password label styling
+        jLabel7.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        jLabel8.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+
+        // Login button styling
+        btnLogin3.setPreferredSize(new Dimension(200, 40));
+        btnLogin3.setBackground(new Color(79, 70, 229));
+        btnLogin3.setForeground(Color.WHITE);
+        btnLogin3.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnLogin3.setBorder(BorderFactory.createEmptyBorder(10, 20, 10, 20));
+        btnLogin3.setCursor(new Cursor(Cursor.HAND_CURSOR));
+        btnLogin3.setFocusPainted(false);
+
+        // Text fields styling
+        styleTextField(txtUserName3);
+        styleTextField(txtPassword3);
+
+        // Logout button styling
+        btnLogout.setBackground(new Color(239, 68, 68));
+        btnLogout.setForeground(Color.WHITE);
+        btnLogout.setFont(new Font("Segoe UI", Font.BOLD, 14));
+        btnLogout.setBorder(BorderFactory.createEmptyBorder(8, 16, 8, 16));
+        btnLogout.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+        // Add hover effects
+        addButtonHoverEffect(btnLogin3);
+        addButtonHoverEffect(btnLogout);
+    }
+
+    private void styleTextField(JTextField field) {
+        field.setPreferredSize(new Dimension(200, 35));
+        field.setFont(new Font("Segoe UI", Font.PLAIN, 14));
+        field.setBorder(BorderFactory.createCompoundBorder(
                 BorderFactory.createLineBorder(new Color(209, 213, 219)),
                 BorderFactory.createEmptyBorder(5, 10, 5, 10)
-            ));
-        }
-    });
-}
+        ));
 
-private void addButtonHoverEffect(JButton button) {
-    button.addMouseListener(new java.awt.event.MouseAdapter() {
-        public void mouseEntered(java.awt.event.MouseEvent evt) {
-            if (button == btnLogin3) {
-                button.setBackground(new Color(67, 56, 202));
-            } else {
-                button.setBackground(new Color(220, 38, 38));
+        field.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                field.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(79, 70, 229), 2),
+                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
             }
-        }
-        
-        public void mouseExited(java.awt.event.MouseEvent evt) {
-            if (button == btnLogin3) {
-                button.setBackground(new Color(79, 70, 229));
-            } else {
-                button.setBackground(new Color(239, 68, 68));
+
+            @Override
+            public void focusLost(FocusEvent e) {
+                field.setBorder(BorderFactory.createCompoundBorder(
+                        BorderFactory.createLineBorder(new Color(209, 213, 219)),
+                        BorderFactory.createEmptyBorder(5, 10, 5, 10)
+                ));
             }
-        }
-    });
-}
+        });
+    }
+
+    private void addButtonHoverEffect(JButton button) {
+        button.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                if (button == btnLogin3) {
+                    button.setBackground(new Color(67, 56, 202));
+                } else {
+                    button.setBackground(new Color(220, 38, 38));
+                }
+            }
+
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                if (button == btnLogin3) {
+                    button.setBackground(new Color(79, 70, 229));
+                } else {
+                    button.setBackground(new Color(239, 68, 68));
+                }
+            }
+        });
+    }
+
     /**
      * This method is called from within the constructor to initialize the form.
      * WARNING: Do NOT modify this code. The content of this method is always
@@ -304,14 +306,14 @@ private void addButtonHoverEffect(JButton button) {
         }
         System.out.println("Attempting login for: " + username); // Debug
 
-       if (credManager.validateUser(username, password)) {
-        String role = credManager.getUserRole(username);
-        // Set the username in UserSession
-        UserSession.getInstance().setUsername(username);
-String organization = credManager.getOrganizationForUser(username);
-String enterprise = credManager.getEnterpriseForUser(username);
-UserSession.getInstance().setOrganization(organization);
-UserSession.getInstance().setEnterprise(enterprise);
+        if (credManager.validateUser(username, password)) {
+            String role = credManager.getUserRole(username);
+            // Set the username in UserSession
+            UserSession.getInstance().setUsername(username);
+            String organization = credManager.getOrganizationForUser(username);
+            String enterprise = credManager.getEnterpriseForUser(username);
+            UserSession.getInstance().setOrganization(organization);
+            UserSession.getInstance().setEnterprise(enterprise);
             System.out.println("Role found: " + role); // Debug
 
             CardSequencePanel.setVisible(true);
@@ -336,6 +338,9 @@ UserSession.getInstance().setEnterprise(enterprise);
                 case "HospitalityManager":
                     CardSequencePanel.add(new HospitalityManagementPanel());
                     break;
+                case "DataAnalyst":
+                    CardSequencePanel.add(new AnalyticsDashboardPanel(username));
+                    break;
                 default:
                     JOptionPane.showMessageDialog(this, "Invalid role");
                     return;
@@ -355,28 +360,26 @@ UserSession.getInstance().setEnterprise(enterprise);
     }//GEN-LAST:event_txtUserNameActionPerformed
 
     private void btnLogoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnLogoutActionPerformed
-   int confirm = JOptionPane.showConfirmDialog(this, 
-        "Are you sure you want to logout?",
-        "Confirm Logout",
-        JOptionPane.YES_NO_OPTION);
-        
-    if (confirm == JOptionPane.YES_OPTION) {
-        // Clear the card sequence panel
-        CardSequencePanel.removeAll();
-        
-        // Reset login fields
-        txtUserName3.setText("");
-        txtPassword3.setText("");
-        
+        int confirm = JOptionPane.showConfirmDialog(this,
+                "Are you sure you want to logout?",
+                "Confirm Logout",
+                JOptionPane.YES_NO_OPTION);
 
-        
-        // Clear session data
-        bookingService = null;
-        
-        // Refresh the container
-        CardSequencePanel.revalidate();
-        CardSequencePanel.repaint();
-    }
+        if (confirm == JOptionPane.YES_OPTION) {
+            // Clear the card sequence panel
+            CardSequencePanel.removeAll();
+
+            // Reset login fields
+            txtUserName3.setText("");
+            txtPassword3.setText("");
+
+            // Clear session data
+            bookingService = null;
+
+            // Refresh the container
+            CardSequencePanel.revalidate();
+            CardSequencePanel.repaint();
+        }
     }//GEN-LAST:event_btnLogoutActionPerformed
 
     /**
