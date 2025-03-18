@@ -111,7 +111,7 @@ BTMS follows a modular design with the following components:
 
 ```bash
 # Clone the repository
-git clone https://github.com/yourusername/btms.git
+git clone https://github.com/Anupkumarbochare/Boston-Tourism-Managment-Systems---BTMS.git
 
 # Navigate to the project directory
 cd btms
